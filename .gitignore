@@ -1,16 +1,16 @@
 # dependencies
 /node_modules
-/RFC8628/javascript/examples/ssi-auth-lib/node_modules
+/SSIOAuth/RFC8628/javascript/examples/ssi-auth-lib/node_modules
 
 # testing
 /coverage
 
 # production
 /build
-/RFC8628/javascript/examples/ssi-auth-lib/dist
+/SSIOAuth/RFC8628/javascript/examples/ssi-auth-lib/dist
 
 ./idea
-/RFC8628/javascript/examples/ssi-auth-lib/idea
+/SSIOAuth/RFC8628/javascript/examples/ssi-auth-lib/idea
 .idea
 # misc
 .DS_Store
@@ -20,7 +20,7 @@
 .env.test.local
 .env.production.local
 
-/RFC8628/javascript/examples/ssi-auth-lib/npm-debug.log*
+/SSIOAuth/RFC8628/javascript/examples/ssi-auth-lib/npm-debug.log*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
