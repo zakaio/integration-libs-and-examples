@@ -1,0 +1,53 @@
+<HTML>
+<head>
+<script>
+var authToken;
+async function start() {
+  authToken = findCookie("ZakaAuth");
+  if (!authToken) {
+    console.log("Token not set")
+  }
+  console.log("reveived token:"+authToken);
+
+  const secretResult = await fetch("../secret-place1", {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer '+authToken
+    }
+  });
+
+  const element = document.getElementById("AAA")
+  if (secretResult.ok) {
+      element.innerText = await secretResult.text()
+  } else {
+      const status = secretResult.status;
+      console.log("errpr: statud = "+status);
+      console.log("text="+ await secretResult.text());
+  }
+
+}
+
+function findCookie(name) {
+  var pattern = RegExp(name + "=.[^;]*")
+  var matched = document.cookie.match(pattern)
+  if(matched){
+    var cookie = matched[0].split('=')
+    return cookie[1]
+  }
+  return false
+}
+
+
+</script>
+<css>
+
+</css>
+</head>
+<body onLoad="start()">
+  <div class="content">
+    <p id="AAA">
+
+    </p>
+  </div>
+</body>
+</HTML>
