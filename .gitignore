@@ -1,6 +1,9 @@
 # dependencies
 /node_modules
 /SSIOAuth/RFC8628/javascript/examples/ssi-auth-lib/node_modules
+/WebHook/javascript/examples/sync-issue/node_modules
+/WebHook/javascript/examples/async-issue/node_modules
+/WebHook/javascript/examples/external-verification/node_modules
 
 # testing
 /coverage
@@ -21,6 +24,9 @@
 .env.production.local
 
 /SSIOAuth/RFC8628/javascript/examples/ssi-auth-lib/npm-debug.log*
+/WebHook/javascript/examples/sync-issue/npm-debug.log*
+/WebHook/javascript/examples/async-issue/npm-debug.log*
+/WebHook/javascript/examples/external-verification/npm-debug.log*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
