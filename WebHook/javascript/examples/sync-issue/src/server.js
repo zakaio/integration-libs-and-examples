@@ -58,8 +58,8 @@ router.post('/sync-issue', function (req, res) {
   }
    */
   const issuedCredentials = [{
-    credentialId: "2RjEBo9zXkJByXm14xQHtg:3:CL:568:tag",
-    schemaId: "2RjEBo9zXkJByXm14xQHtg:2:My Schema:1.0",
+    credentialId: "FhnK3hGQ6EeQHKztiHJ6pu:3:CL:649:tag",
+    schemaId: "FhnK3hGQ6EeQHKztiHJ6pu:2:Example Secret Access:1.0",
     fields: [
       {name: "Document ID", value: "007"},
       {name: "Counter", value: `${counter++}`},
