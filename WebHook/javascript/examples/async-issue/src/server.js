@@ -150,7 +150,7 @@ router.post('/async-issue', function (req, res) {
       serviceDid: body.publicServiceDid,
       subscriberConnectDid: body.subscriberConnectDid,
       subscriberEventId: body.actionEventId,
-      issuedCredentials: issuedCredentials,
+      credentials: issuedCredentials,
       revokedCredentials: [],
       issuedAt: new Date().getTime(),
       ok: true
