@@ -142,13 +142,16 @@ router.post('/async-issue', function (req, res) {
         {name: "Access Level", value: "Super Secret Level"},
         {name: "Credential Issue Date", value: `${dateToSeconds(new Date())}`},
       ],
+      utcIssuedAt: new Date().getTime(),
+      revoked: false
     }];
     const result = {
       serviceDid: body.publicServiceDid,
       subscriberConnectDid: body.subscriberConnectDid,
-      actionEventId: body.actionEventId,
+      subscriberEventId: body.actionEventId,
       issuedCredentials: issuedCredentials,
       revokedCredentials: [],
+      issuedAt: new Date().getTime(),
       ok: true
     };
     sendResult(

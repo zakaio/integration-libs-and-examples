@@ -66,6 +66,8 @@ router.post('/sync-issue', function (req, res) {
       {name: "Access Level", value: "Super Secret Level"},
       {name: "Credential Issue Date", value: `${dateToSeconds(new Date())}`},
     ],
+    utcIssuedAt: new Date().getTime(),
+    revoked: false
   }];
   const result = {
     serviceDid: body.publicServiceDid,
