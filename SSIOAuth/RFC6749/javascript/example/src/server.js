@@ -25,7 +25,7 @@ router.get('/redirect',function(req,res){
   const clientId = '';
   const clientSecret = '';
   const code = req.query.code;
-  const redirectUri = req.protocol + '://' + req.get('host') + req.originalUrl;
+  const redirectUri = req.protocol + '://' + req.get('host') + req.originalUrl.split("?").shift();
   axios.post(
       'https://platform.proofspace.id/oauth/token',
       queryString.stringify({
@@ -39,6 +39,9 @@ router.get('/redirect',function(req,res){
       const token = response.data['access_token'];
       res.cookie('zakaAuth', token);
       res.redirect(302, '/');
+  }).catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
   });
 });
 
