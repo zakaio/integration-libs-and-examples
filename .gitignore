@@ -1,6 +1,7 @@
 # dependencies
 /node_modules
 /SSIOAuth/RFC8628/javascript/examples/ssi-auth-lib/node_modules
+/SSIOAuth/RFC6749/javascript/example/node_modules
 /WebHook/javascript/examples/sync-issue/node_modules
 /WebHook/javascript/examples/async-issue/node_modules
 /WebHook/javascript/examples/external-verification/node_modules
@@ -24,6 +25,7 @@
 .env.production.local
 
 /SSIOAuth/RFC8628/javascript/examples/ssi-auth-lib/npm-debug.log*
+/SSIOAuth/RFC6749/javascript/example/npm-debug.log*
 /WebHook/javascript/examples/sync-issue/npm-debug.log*
 /WebHook/javascript/examples/async-issue/npm-debug.log*
 /WebHook/javascript/examples/external-verification/npm-debug.log*
