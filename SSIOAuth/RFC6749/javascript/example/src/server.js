@@ -32,7 +32,7 @@ router.get('/redirect',function(req,res){
         'client_id': clientId,
         'client_secret': clientSecret,
         'code': code,
-        'redirect_url': redirectUri,
+        'redirect_uri': redirectUri,
         'grant_type': 'authorization_code'
       })
   ).then((response) => {
