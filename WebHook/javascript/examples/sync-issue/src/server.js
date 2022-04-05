@@ -58,8 +58,8 @@ router.post('/sync-issue', function (req, res) {
   }
    */
   const issuedCredentials = [{
-    credentialId: "FhnK3hGQ6EeQHKztiHJ6pu:3:CL:649:tag",
-    schemaId: "FhnK3hGQ6EeQHKztiHJ6pu:2:Example Secret Access:1.0",
+    credentialId: process.env.CREDENTIAL_ID,
+    schemaId: process.env.SCHEMA_ID,
     fields: [
       {name: "Document ID", value: "007"},
       {name: "Counter", value: `${counter++}`},
@@ -83,7 +83,7 @@ router.post('/sync-issue', function (req, res) {
 //add the router
 app.use('/', router);
 
-const port = process.env.port || 4605;
+const port = process.env.PORT || 4605;
 app.listen(port);
 
 console.log(`Running at Port ${port}`);

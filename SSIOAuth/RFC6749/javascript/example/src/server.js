@@ -22,12 +22,12 @@ router.get('/',function(req,res){
 });
 
 router.get('/redirect',function(req,res){
-  const clientId = '';
-  const clientSecret = '';
+  const clientId = process.env.CLIENT_DID;
+  const clientSecret = process.env.CLIENT_SECRET;
   const code = req.query.code;
-  const redirectUri = req.protocol + '://' + req.get('host') + req.originalUrl.split("?").shift();
+  const redirectUri = process.env.REDIRECT_URI || (req.protocol + '://' + req.get('host') + req.originalUrl.split("?").shift());
   axios.post(
-      'https://platform.proofspace.id/oauth/token',
+      `${process.env.OAUTH_URL}/token`,
       queryString.stringify({
         'client_id': clientId,
         'client_secret': clientSecret,
@@ -38,7 +38,7 @@ router.get('/redirect',function(req,res){
   ).then((response) => {
       const token = response.data['access_token'];
       res.cookie('zakaAuth', token);
-      res.redirect(302, '/');
+      res.redirect(302, process.env.ROOT_URI);
   }).catch((err) => {
       console.log(err);
       res.sendStatus(500);
@@ -56,7 +56,7 @@ router.get('/secret', jwt({ secret: JWT_KEY, algorithms: ['RS256']}), function(r
 //add the router
 app.use('/', router);
 
-const port = process.env.port || 4607;
+const port = process.env.PORT || 4607;
 
 app.listen(port);
 

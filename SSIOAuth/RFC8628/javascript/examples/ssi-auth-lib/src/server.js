@@ -36,7 +36,7 @@ router.get('/secret', jwt({ secret: JWT_KEY, algorithms: ['RS256']}), function(r
 //add the router
 app.use('/', router);
 
-const port = process.env.port || 4603;
+const port = process.env.PORT || 4603;
 
 app.listen(port);
 

@@ -48,7 +48,7 @@ router.post('/external-verification', function (req, res) {
 //add the router
 app.use('/', router);
 
-const port = process.env.port || 4606;
+const port = process.env.PORT || 4606;
 app.listen(port);
 
 console.log(`Running at Port ${port}`);

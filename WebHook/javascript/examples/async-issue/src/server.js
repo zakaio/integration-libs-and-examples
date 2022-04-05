@@ -135,8 +135,8 @@ router.post('/async-issue', function (req, res) {
    */
   setTimeout(() => {
     const issuedCredentials = [{
-      credentialId: "FhnK3hGQ6EeQHKztiHJ6pu:3:CL:649:tag",
-      schemaId: "FhnK3hGQ6EeQHKztiHJ6pu:2:Example Secret Access:1.0",
+      credentialId: process.env.CREDENTIAL_ID,
+      schemaId: process.env.SCHEMA_ID,
       fields: [
         {name: "Document ID", value: "007"},
         {name: "Counter", value: `${counter++}`},
@@ -156,7 +156,7 @@ router.post('/async-issue', function (req, res) {
       ok: true
     };
     sendResult(
-        `https://platform.proofspace.id/service-dashboard-backend/service/${body.publicServiceDid}/webhook-accept/credentials-issued`,
+        `${process.env.CONTAINER_URI}/${body.publicServiceDid}/webhook-accept/credentials-issued`,
         result
     );
   },20000);
@@ -174,7 +174,7 @@ router.post('/async-issue', function (req, res) {
 //add the router
 app.use('/', router);
 
-const port = process.env.port || 4604;
+const port = process.env.PORT || 4604;
 app.listen(port);
 
 console.log(`Running at Port ${port}`);
