@@ -21,8 +21,8 @@ router.get('/auth',function(req,res){
   res.sendFile(path.join(__dirname+'/auth/index.html'));
 });
 
-router.get('/auth/ssi.js',function(req,res){
-  res.sendFile(path.join(__dirname+'/auth/ssi.js'));
+router.get('/auth/wl.js',function(req,res){
+  res.sendFile(path.join(__dirname+'/auth/wl.js'));
 });
 
 router.get('/secret', jwt({ secret: JWT_KEY, algorithms: ['RS256']}), function(req,res) {

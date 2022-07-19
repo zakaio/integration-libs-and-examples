@@ -3,27 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
     <title>Auth via ProofSpace SSI</title>
   </head>
   <body onload='onLoad()'>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div style="position: fixed;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);" id="root"></div>
 	<div id="result"></div>
-	<script src="/auth/ssi.js"></script>
+	<script src="/auth/wl.js"></script>
 	<script>
 		function onLoad() {
 			console.log("i load!");
 			console.log(ProofSpace.sum(3, 4));
-            ProofSpace.SSIAuth.start(
+            ProofSpace.WebLinker.startWithSSIOAuth(
 			    document.getElementById('root'),
                 {
-                    authServiceUrl: 'https://platform.proofspace.id/oauth',
-                    clientId: '', // Insert your Service DID here
+                    serviceDid: '', // Insert your Service DID here
+                    interactionId: '', // Insert your interaction ID here
+                    instanceId: '', // Insert your instance ID here
                     size: 300
                 }
             ).then((tkn) => {
