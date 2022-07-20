@@ -14,6 +14,12 @@
 		function onLoad() {
 			console.log("i load!");
 			console.log(ProofSpace.sum(3, 4));
+            const token = localStorage.getItem('auth');
+            if (token) {
+                window.location.href = "/";
+                return;
+            }
+
             ProofSpace.WebLinker.startWithSSIOAuth(
 			    document.getElementById('root'),
                 {
