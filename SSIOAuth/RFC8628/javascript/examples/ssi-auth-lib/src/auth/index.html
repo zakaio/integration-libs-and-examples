@@ -26,7 +26,14 @@
                     serviceDid: '', // Insert your Service DID here
                     interactionId: '', // Insert your interaction ID here
                     instanceId: '', // Insert your instance ID here
-                    size: 300
+                    size: 300 // size of qr code in pixels
+                    // buttonText - string, text of web-link button,
+                    // buttonClass - string, css class names for button style,
+                    // buttonStyle - string, css style for button,
+                    // timerClass - string, css class name for timer element style
+                    // timerStyle - string, css style for timer element
+                    // returnToBrowser - boolean, use callback to browser
+
                 }
             ).then((tkn) => {
 				console.log("token", tkn);
