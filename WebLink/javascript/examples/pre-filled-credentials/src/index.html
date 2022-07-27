@@ -3,23 +3,41 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Auth via ProofSpace SSI</title>
+    <style>
+        .btn {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            cursor: pointer;
+            width: 58px;
+            height: 58px;
+        }
+        .qr {
+            border: 1px solid #DDDDDD;
+        }
+    </style>
+    <title>ProofSpace SSI Example</title>
 </head>
 <body onload='onLoad()'>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<div style="position: fixed;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);" id="root"></div>
-<div id="result"></div>
+<div class="btn" id="myElement">
+    <img src="logo.png"/>
+</div>
 <script src="wl.js"></script>
 <script>
     function onLoad() {
         console.log("i load!");
         ProofSpace.WebLinker.start(
-            document.getElementById('root'),
+            document.getElementById('myElement'),
             {
                 size: 300,
                 serviceDid: '', // Insert your Service DID here
                 interactionId: '', // Insert your interaction ID here
                 instanceId: '', // Insert your instance ID here
+                popOverMode: true,
+                qr: {class: 'qr'},
             },
             [{
                 credentialId: '',
