@@ -29,6 +29,7 @@
             border: 1px solid #DDDDDD;
         }
     </style>
+    <script src="wl.js"></script>
     <script>
 
         const valueToDate = (value) => {
@@ -219,10 +220,14 @@
                 preFilledCreds,
             );
         }
+
+        function onLoad() {
+
+        }
     </script>
     <title>ProofSpace SSI Example</title>
 </head>
-<body>
+<body onload="onLoad()">
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <div id="loader" class="hidden">Loading...</div>
 <div id="service" class="center">
@@ -259,6 +264,5 @@
 <div id="qrCode" class="hidden">
 </div>
 
-<script src="wl.js"></script>
 </body>
 </html>
