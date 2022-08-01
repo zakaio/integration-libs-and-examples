@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        .hidden {
+            display: none;
+        }
+        .paddingTop {
+            padding-top: 16px;
+        }
+        .textField {
+            width: 300px;
+            height: 32px;
+        }
+        .btn {
+            height: 32px;
+            min-width: 100px;
+        }
+        .center {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+        }
+        .qr {
+            border: 1px solid #DDDDDD;
+        }
+    </style>
+    <script>
+
+        const valueToDate = (value) => {
+            const ts = parseInt(value, 10);
+            if (isNaN(ts)) {
+                return new Date(0);
+            }
+            if (ts > 2147483647) {
+                return new Date(ts);
+            }
+            return new Date(parseInt(value, 10) * 1000);
+        };
+
+        const dateToAValue = (date) => {
+            return Math.floor(date.getTime() / 1000).toString(10);
+        };
+
+        const urlPrefix = 'https://platform.proofspace.id/service-dashboard-backend/service/';
+        let actionsList = [];
+        let preFilledCreds = [];
+        let credInfos = [];
+
+        const cfg = {
+            size: 300,
+            serviceDid: '', // Insert your Service DID here
+            interactionId: '', // Insert your interaction ID here
+            instanceId: '', // Insert your instance ID here
+        };
+
+        function getUrl(url) {
+            return fetch(url).then((res) => res.json());
+        }
+
+        function showLoader(id) {
+            document.getElementById(id).setAttribute('class', 'hidden');
+            document.getElementById('loader').setAttribute('class', 'center');
+        }
+
+        function hideLoader(id) {
+            document.getElementById('loader').setAttribute('class', 'hidden');
+            document.getElementById(id).setAttribute('class', 'center');
+        }
+
+        function onSubmitServiceDid() {
+            const el = document.getElementById('serviceDID');
+            cfg.serviceDid = el ? el.value : 'none';
+            showLoader('service');
+            getUrl(`${urlPrefix}${cfg.serviceDid}/info/action-templates`)
+                .then((actions) => {
+                    actionsList = actions.filter((a) => a.media.find((m) => m.type === 'QR'));
+                        //.forEach((a) => actionsMap.set(a.actionId, a));
+                    onActionSelect();
+                    hideLoader('action');
+                }).then(() => {
+                });
+
+        }
+
+        function onActionSelect(selected) {
+            const actionId = selected ? selected.value : actionsList[0].actionId;
+            const el = document.getElementById('interactionId');
+            el.innerHTML = '';
+            actionsList.forEach((a, i) => {
+                el[i] = new Option(a.actionName, a.actionId, a.actionId === actionId, a.actionId === actionId);
+            });
+            cfg.interactionId = actionId;
+            onInstanceSelect();
+        }
+
+        function onInstanceSelect(selected) {
+            const action = actionsList.find((a) => a.actionId === cfg.interactionId);
+            const instanceId = selected ? selected.value : action.actionInstances[0].id;
+            const el = document.getElementById('instanceId');
+            el.innerHTML = '';
+            action.actionInstances.forEach((a, i) => {
+                el[i] = new Option(a.id, a.id, a.id === instanceId, a.id === instanceId);
+            });
+            cfg.instanceId = instanceId;
+        }
+
+        function onSubmitAction() {
+            showLoader('action');
+            const action = actionsList.find((a) => a.actionId === cfg.interactionId);
+            const preFilledCredIds = action.predicates.filter((p) => p.fromActionQRCode).map((p) => p.credentialId);
+            if (preFilledCredIds && preFilledCredIds.length) {
+                const createNameDiv = (attr) => {
+                    const el = document.createElement('div');
+                    el.innerHTML = `${attr.name}:`;
+                    el.setAttribute('class', 'paddingTop');
+                    return el;
+                };
+                const createFormField = (attr, cid, preFilledAttr) => {
+                    const el = document.createElement('div');
+                    el.setAttribute('class', 'paddingTop');
+                    if (attr.enumValues && attr.enumValues.length) {
+                        const s = document.createElement('select');
+                        s.setAttribute('class', 'textField');
+                        s.setAttribute('id', `${cid}${attr.name}`);
+                        const changeSelection = (e) => {
+                            const selected = e ? e.target : undefined;
+                            preFilledAttr.value = selected ? selected.value : attr.enumValues[0].value;
+                            s.innerHTML = '';
+                            attr.enumValues.forEach((e, i) => {
+                                s[i] = new Option(e.name, e.value, preFilledAttr.value === e.value, preFilledAttr.value === e.value);
+                            });
+                        };
+                        s.addEventListener('change', changeSelection);
+                        //s.onchange = changeSelection;
+                        changeSelection();
+                        el.appendChild(s);
+                    } else {
+                        const inp = document.createElement('input');
+                        inp.setAttribute('class', 'textField');
+                        inp.setAttribute('id', `${cid}${attr.name}`);
+                        if (attr.type === 'date') {
+                            inp.setAttribute('type', 'datetime');
+                            inp.setAttribute('value', valueToDate(preFilledAttr.value).toISOString());
+                        } else if (attr.type === 'number') {
+                            inp.setAttribute('type', 'number');
+                            inp.setAttribute('value', preFilledAttr.value);
+                        }
+                        const inputHandler = function(e) {
+                            if (attr.type === 'date') {
+                                preFilledAttr.value = dateToAValue(new Date(e.target.value));
+                            } else {
+                                preFilledAttr.value = e.target.value;
+                            }
+                        }
+                        inp.addEventListener('input', inputHandler);
+                        el.appendChild(inp);
+                    }
+                    return el;
+
+                };
+                const createCredElement = (info) => {
+                    const res = document.createElement('div');
+                    const h = document.createElement('h4');
+                    h.innerHTML = info.schema.name;
+                    res.appendChild(h);
+                    const preFilledCred = {
+                        credentialId: info.credential.credentialId,
+                        attributes: []
+                    };
+                    preFilledCreds.push(preFilledCred);
+                    info.schema.attributes.forEach((a) => {
+                        createPreFilledValue = () => {
+                            let val = '';
+                            if (a.enumValues && a.enumValues.length) {
+                                val = a.enumValues[0].value;
+                            } else if (a.type === 'date') {
+                                val = dateToAValue(new Date());
+                            } else if (a.type === 'number') {
+                                val = '0';
+                            }
+                            return {name: a.name, value: val};
+                        };
+                        res.appendChild(createNameDiv(a));
+                        const preFilledValue = createPreFilledValue();
+                        preFilledCred.attributes.push(preFilledValue);
+                        res.appendChild(createFormField(a, preFilledCred.credentialId, preFilledValue));
+                    });
+                    return res;
+                };
+                Promise.all(preFilledCredIds.map((credId) => getUrl(`${urlPrefix}${cfg.serviceDid}/credential/id-extended/${credId}`)))
+                    .then((res) => {
+                        res.forEach((info) => {
+                            const el = document.getElementById('preFilled');
+                            el.appendChild(createCredElement(info));
+                        })
+                        hideLoader('creds');
+                    });
+
+            } else {
+                onSubmitCreds();
+            }
+        }
+
+        function onSubmitCreds() {
+            showLoader('creds');
+            hideLoader('qrCode');
+            showQr();
+        }
+
+        function showQr() {
+            ProofSpace.WebLinker.start(
+                document.getElementById('qrCode'),
+                cfg,
+                preFilledCreds,
+            );
+        }
+    </script>
+    <title>ProofSpace SSI Example</title>
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="loader" class="hidden">Loading...</div>
+<div id="service" class="center">
+    <div>Service DID:</div>
+    <div class="paddingTop"><input id="serviceDID" type="text" class="textField"/></div>
+    <div class="paddingTop">
+        <button class="btn" onclick="onSubmitServiceDid()">Next</button>
+    </div>
+</div>
+
+<div id="action" class="hidden">
+    <div>Interaction:</div>
+    <div class="paddingTop">
+        <select id="interactionId" class="textField" onchange="onActionSelect(this)">
+        </select>
+    </div>
+    <div class="paddingTop">Instance:</div>
+    <div class="paddingTop">
+        <select id="instanceId" class="textField" onchange="onInstanceSelect(this)">
+        </select>
+    </div>
+    <div class="paddingTop">
+        <button class="btn" onclick="onSubmitAction()">Next</button>
+    </div>
+</div>
+
+<div id="creds" class="hidden">
+    <div id="preFilled"></div>
+    <div class="paddingTop">
+        <button class="btn" onclick="onSubmitCreds()">Next</button>
+    </div>
+</div>
+
+<div id="qrCode" class="hidden">
+</div>
+
+<script src="wl.js"></script>
+</body>
+</html>
