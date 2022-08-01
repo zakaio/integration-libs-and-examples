@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        .tbl {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+        }
+        .btn {
+            position: relative;
+            cursor: pointer;
+            width: 58px;
+            height: 58px;
+        }
+        .qr {
+            border: 1px solid #DDDDDD;
+            z-index: 1000;
+        }
+    </style>
+    <title>ProofSpace SSI Example</title>
+</head>
+<body onload='onLoad()'>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<table class="tbl" cellpadding="30" cellspacing="100">
+    <tbody>
+    <tr>
+        <td>
+            <div class="btn" id="code1">
+                <img src="logo.png"/>
+            </div>
+        </td>
+        <td>
+            <div class="btn" id="code2">
+                <img src="logo.png"/>
+            </div>
+        </td>
+        <td>
+            <div class="btn" id="code3">
+                <img src="logo.png"/>
+            </div>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="btn" id="code4">
+                <img src="logo.png"/>
+            </div>
+        </td>
+        <td>
+            <div class="btn" id="code5">
+                <img src="logo.png"/>
+            </div>
+        </td>
+        <td>
+            <div class="btn" id="code6">
+                <img src="logo.png"/>
+            </div>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script src="wl.js"></script>
+<script>
+    function onLoad() {
+        console.log("i load!");
+        const cfg = {
+            size: 300,
+            serviceDid: '', // Insert your Service DID here
+            interactionId: '', // Insert your interaction ID here
+            instanceId: '', // Insert your instance ID here
+            popOverMode: true,
+            qr: {class: 'qr'},
+        }
+        const linkers = [];
+        for (let i = 0; i < 6; i++) {
+            const l = new ProofSpace.PSWebLink();
+            linkers.push([l]);
+            l.start(
+                document.getElementById(`code${i+1}`),
+                cfg,
+                [{
+                    credentialId: '',
+                    attributes: [
+                        {name: '<Attribute1 name>', value: '<Attribute1 value>'},
+                        {name: '<Attribute2 name>', value: '<Attribute2 value>'},
+                        // ... other pre-filled attributes
+                    ]
+                }],
+            );
+        }
+    }
+</script>
+</body>
+</html>
