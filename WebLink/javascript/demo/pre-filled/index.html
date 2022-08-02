@@ -105,7 +105,8 @@
             const el = document.getElementById('instanceId');
             el.innerHTML = '';
             action.actionInstances.forEach((a, i) => {
-                el[i] = new Option(a.id, a.id, a.id === instanceId, a.id === instanceId);
+                const strVal = a.parameters && a.parameters.length ? `(${a.parameters.map((p) => `${p.name}: ${p.value}`).join(', ')})` : a.id;
+                el[i] = new Option(strVal, a.id, a.id === instanceId, a.id === instanceId);
             });
             cfg.instanceId = instanceId;
         }
@@ -231,7 +232,7 @@
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <div id="loader" class="hidden">Loading...</div>
 <div id="service" class="center">
-    <div>Service DID:</div>
+    <div>Service ProofSpace DID:</div>
     <div class="paddingTop"><input id="serviceDID" type="text" class="textField"/></div>
     <div class="paddingTop">
         <button class="btn" onclick="onSubmitServiceDid()">Next</button>
