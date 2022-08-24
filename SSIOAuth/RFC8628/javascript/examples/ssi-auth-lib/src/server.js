@@ -25,6 +25,10 @@ router.get('/auth/wl.js',function(req,res){
   res.sendFile(path.join(__dirname+'/auth/wl.js'));
 });
 
+router.get('/auth/logo.png',function(req,res){
+  res.sendFile(path.join(__dirname+'/auth/logo.png'));
+});
+
 router.get('/secret', jwt({ secret: JWT_KEY, algorithms: ['RS256']}), function(req,res) {
   console.log(req.user);
   if (!req.user) {

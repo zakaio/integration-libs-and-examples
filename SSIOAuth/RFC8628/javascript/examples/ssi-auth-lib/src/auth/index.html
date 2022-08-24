@@ -3,13 +3,49 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <style>
+          .btn {
+              min-width: 280px;
+              width: auto;
+              height: 48px;
+              font-size: 18px;
+              background: white;
+              cursor: pointer;
+              border: 1px solid #DDDDDD;
+              border-radius: 5px;
+              white-space: pre;
+          }
+          .icon {
+              width:32px;
+              height:32px;
+              float:left;
+              position: relative;
+              margin-right: 8px;
+          }
+          .icon img {
+              width:32px;
+              height:32px;
+          }
+
+          .btnText {
+              display: inline-block;
+              vertical-align: middle;
+              padding-top: 4px;
+              color: #666666;
+              white-space: pre;
+          }
+      </style>
     <title>Auth via ProofSpace SSI</title>
   </head>
   <body style="font-size: 24px" onload='onLoad()'>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div style="position: fixed;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);" id="root"></div>
 	<div id="result"></div>
-	<script src="wl.js"></script>
+    <!--div style="position: fixed;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);">
+        <button class="btn"><div class="icon"><img src="auth/logo.png"></div><span class="btnText">Authorize with ProofSpace</span></button>
+        <div>01:01</div>
+    </div-->
+	<script src="auth/wl.js"></script>
 	<script>
 		function onLoad() {
 			console.log("i load!");
@@ -23,6 +59,19 @@
             ProofSpace.WebLinker.startWithSSIOAuth(
 			    document.getElementById('root'),
                 {
+                    button: {
+                        class: 'btn',
+                        text: 'Authorize with ProofSpace',
+                        icon: 'auth/logo.png',
+                        iconStyle: {
+                            class: 'icon',
+                        },
+                        textStyle: {
+                            class: 'btnText'
+                        }
+
+                    },
+                    returnToBrowser: false,
                     serviceDid: '', // Insert your Service DID here
                     interactionId: '', // Insert your interaction ID here
                     instanceId: '', // Insert your instance ID here
