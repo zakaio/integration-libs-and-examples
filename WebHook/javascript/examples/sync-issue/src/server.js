@@ -23,11 +23,11 @@ function throwForbiddenError(message) {
 function signatureChecker(req, resp, buff, encoding) {
   const signature = req.header("X-Body-Signature");
   if (!signature) {
-      throw throwForbiddenError("X-Body-Signature header is absent");
+      throwForbiddenError("X-Body-Signature header is absent");
   }
   const v = crypto.verify("sha3-256",buff,publicKey,Buffer.from(signature,'base64'));
   if (!v) {
-    throw throwForbiddenError("Invalid Body Signature");
+    throwForbiddenError("Invalid Body Signature");
   }
 }
 
