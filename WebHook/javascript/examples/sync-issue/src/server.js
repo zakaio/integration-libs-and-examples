@@ -1,4 +1,7 @@
+const crypto = require('crypto')
 const express = require('express');
+const fs = require(fs);
+
 const app = express();
 const bodyParser = require("body-parser");
 const router = express.Router();
@@ -8,8 +11,24 @@ function dateToSeconds(date) {
 }
 let counter = 1;
 
+
+const publicKey = crypto.createPublicKey(fs.readFileSync('publicKey.pem'));
+
+
+export function signatureChecker(req, resp, buff, encoding) {
+  const signature = req.header("X-Body-Signature");
+  if (signature === undefined || signature === null) {
+      throw new Errors.ForbiddenError("X-Body-Signature header is absent");
+  }
+  const v = crypto.verify("sha3-256",buff,publicKey,Buffer.from(signature,'base64'));
+  if (!v) {
+   throw new Errors.ForbiddenError("Invalid Body Signature");
+  }
+}
+
+
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.json( { verify: signatureChecker } ));
 
 router.post('/sync-issue', function (req, res) {
   // add signature or token verification if necessary
