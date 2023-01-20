@@ -12,7 +12,7 @@ function dateToSeconds(date) {
 let counter = 1;
 
 
-const publicKey = crypto.createPublicKey(fs.readFileSync('publicKey.pem'));
+const publicKey = crypto.createPublicKey(fs.readFileSync(__dirname + '/publicKey.pem'));
 
 function throwForbiddenError(message) {
    const error = new Error(message)
