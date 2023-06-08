@@ -41,7 +41,7 @@ object OAuth2GithubHttp4sServer extends IOApp {
 
   // algorithm used for jwt encoding and decoding
   //val jwtAlgo = JwtAlgorithm.HS256
-  val jwtAlgo = JwtAlgorithm.RS256
+  val jwtAlgo = JwtAlgorithm.RS512
   // val jwtKey = "my secret key"
 
   type Limit = Int
@@ -97,7 +97,7 @@ object OAuth2GithubHttp4sServer extends IOApp {
          IO(s"${cfg.authorizationUrl}?client_id=${cfg.clientId}&redirect_uri=${redirectUri(cfg)}&response_type=code".asRight[Unit])
     ))
 
-  // after successful authorization github redirects you here
+  // after successful authorization oauth server redirects you here
   def loginFromOAuthRoute(cfg: AppConfig, backend: SttpBackend[IO, Any]): HttpRoutes[IO] =
     Http4sServerInterpreter[IO]().toRoutes(loginZaka.serverLogic(code =>
       basicRequest
@@ -149,7 +149,7 @@ object OAuth2GithubHttp4sServer extends IOApp {
   // try to decode the provided jwt
   def authenticate(token: String, cfg: AppConfig): Either[String, String] = {
     JwtCirce
-      .decodeAll(token, cfg.jwtKey, Seq(jwtAlgo))
+      .decodeAll(token, cfg.jwtPublicKey, Seq(jwtAlgo))
       .toEither
       .leftMap(err => "Invalid token: " + err)
       .map(decoded => decoded._2.content)
@@ -181,7 +181,7 @@ object OAuth2GithubHttp4sServer extends IOApp {
     val fname = if (args.length > 1) { args(1) } else "appConfig.json";
     val cfg = AppConfig.read(fname) 
 
-    println(s"jwt:\n${cfg.jwtKey}")
+    println(s"jwt:\n${cfg.jwtPublicKey}")
 
     // starting the server
     httpClient
@@ -196,6 +196,8 @@ object OAuth2GithubHttp4sServer extends IOApp {
           .use{ _ =>
             async[IO] {
               println("Started server on: http://localhost:8080")
+              println(s"External url to login should be ${cfg.baseUrl}/login")
+              println(s"External url to secret-place:${cfg.baseUrl}/secret-place1")
               await(IO.never)
             }
           }
