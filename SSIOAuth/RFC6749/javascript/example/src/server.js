@@ -8,9 +8,9 @@ const queryString = require('query-string');
 const fs = require('fs')
 
 
-const JWT_KEY = fs.readfilesync(process.env.JWT_KEY_FILE)
-const JWT_ALGO = fs.readfilesync(process.env.JWT_ALGO)
-console.log("JWT_KEY="+JWT_KEY)
+const JWT_KEY = fs.readFileSync(process.env.JWT_KEY_FILE)
+const JWT_ALGO = process.env.JWT_ALGO
+//console.log("JWT_KEY="+JWT_KEY)
 
 router.get('/',function(req,res){
   res.sendFile(path.join(__dirname+'/secret/index.html'));
