@@ -4,11 +4,13 @@ module.exports = {
     script: 'src/server.js',
     env: {
       PORT: '4607',
-      CLIENT_DID: '',
-      CLIENT_SECRET: '',
-      OAUTH_URL: 'https://platform.proofspace.id/oauth',
-      REDIRECT_URI: 'https://platform.proofspace.id/auth-demo2/redirect',
-      ROOT_URI: '/'
+      CLIENT_ID: 'ab95234d-e1ca-4fa1-862c-da239dd89b68',
+      CLIENT_SECRET: '2323r31r',
+      OAUTH_URL: 'https://test.proofspace.id/oauth2',
+      REDIRECT_URI: 'https://test.proofspace.id/auth-demo2/redirect',
+      ROOT_URI: '/',
+      JWT_KEY_FILE: "publicKey.pem",
+      JWT_ALGO: "RS256",
     },
   }]
 };
