@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const { expressjwt: jwt } = require('express-jwt');
+var { expressjwt: jwt } = require('express-jwt');
 const router = express.Router();
 const axios = require('axios');
 const queryString = require('query-string');
@@ -41,8 +41,7 @@ router.get('/redirect',function(req,res){
 });
 
 router.get('/secret', jwt({ secret: JWT_KEY, algorithms: [JWT_ALGO]}), function(req,res) {
-  console.log(req.user);
-  if (!req.user) {
+  if (!req.auth) {
     return res.sendStatus(401);
   }
   res.sendStatus(200);
