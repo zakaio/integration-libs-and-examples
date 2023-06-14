@@ -32,7 +32,7 @@ router.get('/redirect',function(req,res){
       })
   ).then((response) => {
       const token = response.data['access_token'];
-      res.cookie('zakaAuth', token);
+      res.cookie('proofspaceAuth', token);
       res.redirect(302, process.env.ROOT_URI);
   }).catch((err) => {
       console.log(err);
