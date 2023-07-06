@@ -1,0 +1,9 @@
+{
+  "baseUrl" :"https://test.proofspace.id/test-oauth-client/rfc6749",
+  "authorizationUrl" : "https://test.proofspace.id/oauth2/authorization", 
+  "accessTokenUrl" :  "https://test.proofspace.id/oauth2/token",  
+  "clientId" : "should be generated, get it from action config on dashboard",
+  "clientSecret" : "ChangeMe",
+  "jwtPublicKeyFile": "RSA key in pem format, can be generated on dahsboard onextension service config",
+  "scopes": [ ]
+}

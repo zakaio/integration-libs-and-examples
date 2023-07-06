@@ -1,9 +1,9 @@
 module.exports = {
   apps : [{
-    name: 'proofspace-oauth-rfc6749-example',
+    name: 'proofspace-oauth-rfc6749-extension-example',
     script: 'src/server.js',
     env: {
-      PORT: '4607',
+      PORT: '4608',
       CLIENT_ID: '', // Insert client id here
       CLIENT_SECRET: '', // Insert client secret here
       OAUTH_URL: 'https://test.proofspace.id/oauth2',

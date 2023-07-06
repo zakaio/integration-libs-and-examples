@@ -82,12 +82,18 @@
                     // timerClass - string, css class name for timer element style
                     // timerStyle - string, css style for timer element
                     // returnToBrowser - boolean, use callback to browser
+		    env: {
+                      containerURIPrefix: "https://test.proofspace.id/service-dashboard-backend",
+		      SSIAuthenticationCredDefId: "Wv5tREzxvixFw9MpUxcu1J:3:CL:509:tag",
+                      authServiceUrl: "https://test.proofspace.id/oauth2",
+		      nativeURIPrefix: "https://test.proofspace.id/native/execute"
+		    }
 
                 }
             ).then((tkn) => {
-				console.log("token", tkn);
+		console.log("token", tkn);
                 localStorage.setItem('auth', tkn.access_token);
-                window.location.href = "/";
+                window.location.href = "/auth-demo/";
 			});
 		}
 	</script>
